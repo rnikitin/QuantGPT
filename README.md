@@ -217,3 +217,9 @@ A heartfelt thank you goes out to the individuals and teams whose work has been 
 - **Chainlit**, for providing a user-friendly UI, enabling a seamless and intuitive way to interact with `QuantGPT`.
 
 Your collective contributions have not only inspired but also enabled this project to come to fruition.
+
+## License
+
+`QuantGPT` is made available under the MIT License. This permissive license allows for reuse within proprietary software provided that all copies of the licensed software include a copy of the MIT License terms and the copyright notice.
+
+To view the full license, see the [LICENSE](https://github.com/rnikitin/quantgpt/blob/main/LICENSE) file in the GitHub repository.
