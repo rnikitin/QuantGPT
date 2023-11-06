@@ -77,7 +77,7 @@ Rename `env.example` to `.env` and fill in the necessary variables:
 **Mandatory Variables:**
 ```plaintext
 OPENAI_API_KEY="sk-XXXX"
-GPT_MODEL="gpt4"
+GPT_MODEL="gpt-4"
 ```
 
 **Optional Variables:**
@@ -114,7 +114,7 @@ cd ..
 With everything set up, initiate the user interface:
 
 ```bash
-chainlit run app.py
+chainlit run quantgpt.py
 ```
 
 Allow 3-5 minutes on the first run to build the Vector Store index, depending on your internet connection speed.
@@ -122,6 +122,24 @@ Allow 3-5 minutes on the first run to build the Vector Store index, depending on
 ### Start Using QuantGPT
 
 Your setup of `QuantGPT` is complete. The default AI model is GPT-4, but you can adjust this in the `.env` file. Be aware of the costs for indexing and requests, which may be around $1 for indexing and $0.2 per request.
+
+## How It Works
+
+`QuantGPT` operates on a sequence of steps involving data extraction, transformation, and response generation:
+
+1. **Data Extraction:**
+   - **Web Crawling:** Utilizing `Scrapy`, the system programmatically navigates the vectorbt pro documentation website to retrieve content.
+
+2. **Transformation:**
+   - **Indexing:** The `llama_index` module processes the collected data, segmenting documents based on markdown headers ("## ") into indexed sections.
+   - **Question Generation:** To augment the indexed content, `gpt-3.5-turbo` generates related questions for each section, expanding the metadata for the documents.
+   - **VectorIndex Integration:** The resulting document sections, along with their metadata, are stored in the `VectorIndex`.
+
+3. **Response Generation:**
+   - **Document Retrieval:** In response to user queries, the system extracts relevant sections from the `VectorIndex`.
+   - **Summary Composition:** It employs the tree_summary method to synthesize the information into a coherent and contextually relevant answer.
+
+The approach aims to deliver SOTA quality answers from extensive documentation, with the trade-off being higher payment costs per query.
 
 ## Usage
 

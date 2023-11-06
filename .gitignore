@@ -163,3 +163,5 @@ data/
 quant_scraper/docs/
 .chainlit/.langchain.db
 index/
+notebooks/.chainlit/
+index_notebook/
