@@ -39,11 +39,14 @@ class VbtProSpider(scrapy.Spider):
             yield scrapy.Request(url=url, callback=self.parse)
 
     def parse(self, response):
+        # Decode the response body explicitly with UTF-8 if necessary
+        response_body = response.body.decode('utf-8', errors='replace')
+
         # Identify the section of the URL to determine the output directory and file naming
         section = response.url.split('/')[4]
 
         # Using readability to extract the main content
-        document = Document(response.text)
+        document = Document(response_body)
         summary = document.summary()
 
         # Converting HTML summary to Markdown using html2text
@@ -58,7 +61,7 @@ class VbtProSpider(scrapy.Spider):
             # Use predefined filenames for other sections
             filename = os.path.join(self.base_dir, self.file_map.get(section, 'unknown.md'))
 
-        # Write main content as Markdown
+        # Write main content as Markdown with UTF-8 encoding
         with open(filename, 'w', encoding='utf-8') as f:
             f.write(markdown_content)
 
