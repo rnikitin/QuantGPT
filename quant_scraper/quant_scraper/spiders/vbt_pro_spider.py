@@ -59,7 +59,7 @@ class VbtProSpider(scrapy.Spider):
             filename = os.path.join(self.base_dir, self.file_map.get(section, 'unknown.md'))
 
         # Write main content as Markdown
-        with open(filename, 'w') as f:
+        with open(filename, 'w', encoding='utf-8') as f:
             f.write(markdown_content)
 
         # Follow links according to the logic of both spiders

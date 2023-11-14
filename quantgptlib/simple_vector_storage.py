@@ -167,7 +167,7 @@ class QuantSimpleVectorStorage:
         # Configure retriever within the service context
         retriever = VectorIndexRetriever(
             index=self.index,
-            similarity_top_k=10,
+            similarity_top_k=20,
         )
 
         # Configure response synthesizer within the service context
@@ -181,7 +181,7 @@ class QuantSimpleVectorStorage:
             response_synthesizer=response_synthesizer,
             service_context=service_context,
             node_postprocessors=[
-                SimilarityPostprocessor(similarity_cutoff=0.7)
+                SimilarityPostprocessor(similarity_cutoff=0.73)
             ]
         )
         return query_engine
