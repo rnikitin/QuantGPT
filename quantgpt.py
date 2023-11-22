@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 
 from llama_index.query_engine import RetrieverQueryEngine
 from quantgptlib.simple_vector_storage import QuantSimpleVectorStorage
+from quantgptlib.metadata_vector_storage import QuantMetadataVectorStorage
 
 # Load environment variables
 load_dotenv()
@@ -46,7 +47,7 @@ async def on_chat_start():
     cl.user_session.set("query_engine", query_engine)
 
     app_user = cl.user_session.get("user")
-    await cl.Message(f"Hello {app_user.username}. How are you doing?").send()
+    await cl.Message(f"Hello fellow Quant. How are you doing today?").send()
 
 
 @cl.password_auth_callback
