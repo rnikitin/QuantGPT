@@ -11,14 +11,14 @@ class VbtProSpider(scrapy.Spider):
     def __init__(self, *args, **kwargs):
         super(VbtProSpider, self).__init__(*args, **kwargs)
         self.start_urls = [
-                "https://qubitquants.github.io/aligning-mtf-data/index.html"
-                "https://qubitquants.github.io/strategydev/index.html"
-                "https://qubitquants.github.io/vbt_plot_strategy/index.html"
-                "https://qubitquants.github.io/multi_asset_portfolio_simulation/index.html"
-                "https://qubitquants.github.io/parameter-optimization/index.html"
-                "https://qubitquants.github.io/customsim_0/index.html"
-                "https://qubitquants.github.io/customsim_1/index.html"
-                "https://qubitquants.github.io/customsim_2/index.html"
+                "https://qubitquants.github.io/aligning-mtf-data/index.html",
+                "https://qubitquants.github.io/strategydev/index.html",
+                "https://qubitquants.github.io/vbt_plot_strategy/index.html",
+                "https://qubitquants.github.io/multi_asset_portfolio_simulation/index.html",
+                "https://qubitquants.github.io/parameter-optimization/index.html",
+                "https://qubitquants.github.io/customsim_0/index.html",
+                "https://qubitquants.github.io/customsim_1/index.html",
+                "https://qubitquants.github.io/customsim_2/index.html",
                 "https://qubitquants.github.io/customsim_3/index.html"
         ]
 
