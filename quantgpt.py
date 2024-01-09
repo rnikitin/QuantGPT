@@ -51,7 +51,7 @@ async def on_chat_start():
 
 
 @cl.password_auth_callback
-def auth_callback(username: str, password: str) -> Optional[cl.AppUser]:
+def auth_callback(username: str, password: str) -> Optional[cl.User]:
     """
     Authenticates a user based on their username and password.
 
@@ -65,7 +65,7 @@ def auth_callback(username: str, password: str) -> Optional[cl.AppUser]:
     # Fetch the user matching username from your database
     # and compare the hashed password with the value stored in the database
     if (username, password) == ("admin", "admin"):
-        return cl.AppUser(username="admin", role="ADMIN", provider="credentials")
+        return cl.User(identifier="admin", metadata={"role": "admin", "provider": "credentials"})
     else:
         return None
 
