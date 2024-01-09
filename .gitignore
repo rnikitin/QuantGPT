@@ -163,6 +163,7 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
+
 data/
 quant_scraper/docs/
 .chainlit/.langchain.db
@@ -170,3 +171,5 @@ index/
 notebooks/.chainlit/
 index_notebook/
 git_repo_scraper/qubit_quants_vbt_repo
+
+!.gitkeep
