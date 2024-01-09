@@ -2,7 +2,6 @@ import logging
 import os
 from typing import Optional
 import openai
-
 import chainlit as cl
 from dotenv import load_dotenv
 
@@ -45,49 +44,31 @@ async def on_chat_start():
 
     cl.user_session.set("query_engine", query_engine)
 
-    app_user = cl.user_session.get("user")
-    await cl.Message(f"Hello {app_user.username}. How are you doing?").send()
-
+    app_user = cl.user_session.get("user")  # User class instead of AppUser
+    await cl.Message(f"Hello {app_user.identifier}. How are you doing?").send()  # Updated to 'identifier'
 
 @cl.password_auth_callback
-def auth_callback(username: str, password: str) -> Optional[cl.AppUser]:
+def auth_callback(username: str, password: str) -> Optional[cl.User]:  # Updated to User
     """
     Authenticates a user based on their username and password.
-
-    Args:
-        username (str): The username of the user to authenticate.
-        password (str): The password of the user to authenticate.
-
-    Returns:
-        Optional[cl.AppUser]: An instance of `cl.AppUser` if the user is authenticated, otherwise `None`.
     """
-    # Fetch the user matching username from your database
-    # and compare the hashed password with the value stored in the database
     if (username, password) == ("admin", "admin"):
-        return cl.AppUser(username="admin", role="ADMIN", provider="credentials")
+        return cl.User(identifier="admin", metadata={"role": "ADMIN"})  # Updated fields
     else:
         return None
-
 
 @cl.on_message
 async def main(message: cl.Message):
     """
-    This function takes a message object as input, queries a RetrieverQueryEngine object with the message content,
-    and sends the response back to the user in a message object.
+    This function handles incoming messages.
     """
-    query_engine = cl.user_session.get(
-        "query_engine")  # type: RetrieverQueryEngine
+    query_engine = cl.user_session.get("query_engine")
     response = await cl.make_async(query_engine.query)(message.content)
 
-    response_message = cl.Message(content="")
-
-    if hasattr(response, "response_gen"):
-        for token in response.response_gen:
-            await response_message.stream_token(token=token)
-
-    # response_message.content = response.
+    # Using cl.Step for intermediary steps (if applicable in your case)
+    step = cl.Step()  # You might need to adjust this depending on your specific use case
 
     if hasattr(response, "response"):
-        response_message.content = response.response
+        step.output = response.response  # Updated to use 'output' for Step
 
-    await response_message.send()
+    await step.send()  # Updated to send Step instead of Message
