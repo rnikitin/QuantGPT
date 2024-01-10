@@ -6,6 +6,10 @@ __pycache__/
 # C extensions
 *.so
 
+# OS files
+*.DS_Store
+*.ini
+
 # Distribution / packaging
 .Python
 build/
@@ -165,3 +169,4 @@ quant_scraper/docs/
 index/
 notebooks/.chainlit/
 index_notebook/
+git_repo_scraper/qubit_quants_vbt_repo

@@ -82,6 +82,7 @@ GPT_MODEL="gpt-4"
 
 **Optional Variables:**
 (Acquire these from Chainlit Cloud if needed [here](https://cloud.chainlit.io/))
+How to generate `CHAINLIT_AUTH_SECRET` you can read [here](https://docs.chainlit.io/authentication/overview)
 ```plaintext
 CHAINLIT_API_KEY="cl_XXX"
 CHAINLIT_AUTH_SECRET="XXX"

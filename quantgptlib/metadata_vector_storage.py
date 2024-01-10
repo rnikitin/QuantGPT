@@ -15,9 +15,15 @@ from llama_index.query_engine.retriever_query_engine import RetrieverQueryEngine
 from llama_index.retrievers import VectorIndexRetriever
 from llama_index.callbacks.base import CallbackManager
 from llama_index.callbacks.base import BaseCallbackHandler
-from llama_index import GPTVectorStoreIndex, SimpleDirectoryReader
+from llama_index import SimpleDirectoryReader
 from llama_index.node_parser import SimpleNodeParser
 from llama_index.text_splitter import TokenTextSplitter
+from llama_index.llms import OpenAI
+
+from llama_index.node_parser.extractors import (
+    MetadataExtractor,
+    QuestionsAnsweredExtractor,
+)
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -36,7 +42,7 @@ class QuantSimpleVectorStorage:
     """
 
 
-class QuantSimpleVectorStorage:
+class QuantMetadataVectorStorage:
     def __init__(self, persist_dir: str, gpt_model: str, gpt_temperature: float, source_folder: str):
         # collect arguments
         self.persist_dir = persist_dir
@@ -85,14 +91,33 @@ class QuantSimpleVectorStorage:
             ),
         )
 
+    def get_llm_indexer(self):
+        """
+        Sets up and returns an instance of the LLMPredictor class, which uses the ChatOpenAI class
+        to generate predictions based on the GPT model specified by the `gpt_model` attribute of this
+        SimpleVectorStorage instance.
+
+        Returns:
+                An instance of the LLMPredictor class.
+        """
+        return OpenAI(temperature=0.1, model="gpt-3.5-turbo", max_tokens=512)
+
     def load_index_nodes(self):
         logger.info('Loading documents...')
+        llm_indexer = self.get_llm_indexer()
 
         text_splitter = TokenTextSplitter(
             separator="\n## ", chunk_size=1024, chunk_overlap=0)
 
+        metadata_extractor = MetadataExtractor(
+            extractors=[
+                # QuestionsAnsweredExtractor(questions=3, llm=llm_indexer),
+            ],
+        )
+
         node_parser = SimpleNodeParser.from_defaults(
             text_splitter=text_splitter,
+            metadata_extractor=metadata_extractor,
         )
 
         documents = SimpleDirectoryReader(
