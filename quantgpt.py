@@ -51,7 +51,16 @@ async def on_chat_start():
 def auth_callback(username: str, password: str) -> Optional[cl.User]:  # Updated to User
     """
     Authenticates a user based on their username and password.
+
+    Args:
+        username (str): The username of the user to authenticate.
+        password (str): The password of the user to authenticate.
+
+    Returns:
+        Optional[cl.AppUser]: An instance of `cl.AppUser` if the user is authenticated, otherwise `None`.
     """
+    # Fetch the user matching username from your database
+    # and compare the hashed password with the value stored in the database
     if (username, password) == ("admin", "admin"):
         return cl.User(identifier="admin", metadata={"role": "ADMIN"})  # Updated fields
     else:
@@ -60,15 +69,15 @@ def auth_callback(username: str, password: str) -> Optional[cl.User]:  # Updated
 @cl.on_message
 async def main(message: cl.Message):
     """
-    This function handles incoming messages.
+    This function takes a message object as input, queries a RetrieverQueryEngine object with the message content,
+    and sends the response back to the user in a message object.
     """
     query_engine = cl.user_session.get("query_engine")
     response = await cl.make_async(query_engine.query)(message.content)
 
-    # Using cl.Step for intermediary steps (if applicable in your case)
-    step = cl.Step()  # You might need to adjust this depending on your specific use case
+    step = cl.Step()
 
     if hasattr(response, "response"):
-        step.output = response.response  # Updated to use 'output' for Step
+        step.output = response.response 
 
-    await step.send()  # Updated to send Step instead of Message
+    await step.send()
