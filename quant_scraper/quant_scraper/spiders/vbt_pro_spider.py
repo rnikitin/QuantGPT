@@ -1,6 +1,6 @@
 import os
 import scrapy
-from readability import Document
+from readability.readability import Document
 import html2text
 
 class VbtProSpider(scrapy.Spider):

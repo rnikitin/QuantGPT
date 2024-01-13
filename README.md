@@ -75,17 +75,28 @@ pip install -r requirements.txt
 Rename `env.example` to `.env` and fill in the necessary variables:
 
 **Mandatory Variables:**
-```plaintext
+```bash
 OPENAI_API_KEY="sk-XXXX"
 GPT_MODEL="gpt-4"
 ```
 
 **Optional Variables:**
-(Acquire these from Chainlit Cloud if needed [here](https://cloud.chainlit.io/))
-```plaintext
-CHAINLIT_API_KEY="cl_XXX"
-CHAINLIT_AUTH_SECRET="XXX"
+Acquire these from Chainlit Cloud if needed [here](https://cloud.getliteral.ai/)
+Or remove them completely, if you don't need persistence at the moment.
+You can read more about persistence and Literal AI platform [here](https://docs.chainlit.io/data-persistence/overview#enable-data-persistence-in-1-minute).
+
+```bash
+LITERAL_API_KEY="cl_XXX"
 ```
+
+How to generate `CHAINLIT_AUTH_SECRET` you can read [here](https://docs.chainlit.io/authentication/overview).
+To add `CHAINLIT_AUTH_SECRET` to `.env` file you can use the following command:
+
+```bash
+chainlit create-secret
+```
+
+
 
 ### Step 6: Run the Scraper
 
