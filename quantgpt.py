@@ -9,11 +9,13 @@ from llama_index.query_engine import RetrieverQueryEngine
 from quantgptlib.simple_vector_storage import QuantSimpleVectorStorage
 
 # Load environment variables
-load_dotenv()
+load_dotenv(".env", override=True)
 
 # obtain gpt model name from environment variables
 gpt_model = os.getenv('GPT_MODEL')
 gpt_temperature = float(os.getenv('GPT_TEMPERATURE'))
+
+print(f"Using GPT model: {gpt_model} with temperature: {gpt_temperature}")
 
 persist_dir = "./index"
 source_folder = "./quant_scraper/docs"
