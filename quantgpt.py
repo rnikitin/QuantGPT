@@ -2,13 +2,11 @@ import logging
 import os
 from typing import Optional
 import openai
-
 import chainlit as cl
 from dotenv import load_dotenv
 
 from llama_index.query_engine import RetrieverQueryEngine
 from quantgptlib.simple_vector_storage import QuantSimpleVectorStorage
-from quantgptlib.metadata_vector_storage import QuantMetadataVectorStorage
 
 # Load environment variables
 load_dotenv()
@@ -46,12 +44,11 @@ async def on_chat_start():
 
     cl.user_session.set("query_engine", query_engine)
 
-    app_user = cl.user_session.get("user")
-    await cl.Message(f"Hello fellow Quant. How are you doing today?").send()
-
+    app_user = cl.user_session.get("user")  # User class instead of AppUser
+    await cl.Message(f"Hello {app_user.identifier}. How are you doing?").send()  # Updated to 'identifier'
 
 @cl.password_auth_callback
-def auth_callback(username: str, password: str) -> Optional[cl.AppUser]:
+def auth_callback(username: str, password: str) -> Optional[cl.User]:  # Updated to User
     """
     Authenticates a user based on their username and password.
 
@@ -65,10 +62,9 @@ def auth_callback(username: str, password: str) -> Optional[cl.AppUser]:
     # Fetch the user matching username from your database
     # and compare the hashed password with the value stored in the database
     if (username, password) == ("admin", "admin"):
-        return cl.AppUser(username="admin", role="ADMIN", provider="credentials")
+        return cl.User(identifier="admin", metadata={"role": "ADMIN"})  # Updated fields
     else:
         return None
-
 
 @cl.on_message
 async def main(message: cl.Message):
@@ -76,19 +72,12 @@ async def main(message: cl.Message):
     This function takes a message object as input, queries a RetrieverQueryEngine object with the message content,
     and sends the response back to the user in a message object.
     """
-    query_engine = cl.user_session.get(
-        "query_engine")  # type: RetrieverQueryEngine
+    query_engine = cl.user_session.get("query_engine")
     response = await cl.make_async(query_engine.query)(message.content)
 
-    response_message = cl.Message(content="")
-
-    if hasattr(response, "response_gen"):
-        for token in response.response_gen:
-            await response_message.stream_token(token=token)
-
-    # response_message.content = response.
+    step = cl.Step()
 
     if hasattr(response, "response"):
-        response_message.content = response.response
+        step.output = response.response 
 
-    await response_message.send()
+    await step.send()
